@@ -82,7 +82,10 @@ public class SettingsObservableImpl extends SettingsObservable {
     if (resp == null || !resp.isExists()) {
       throw new ElasticsearchException(SETTINGS_NOT_FOUND_MESSAGE);
     }
-    String yamlString = (String) resp.getSource().get("settings");
+
+    String yamlString = SettingsUtils.extractYAMLfromJSONStorage(resp.getSource().keySet().toArray()[0].toString());
+    logger.info("yamlString: "+ yamlString);
+    //String yamlString = (String) resp.getSource().get("settings");
     return new RawSettings(yamlString);
   }
 
